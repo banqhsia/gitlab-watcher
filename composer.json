@@ -1,0 +1,14 @@
+{
+    "name": "benyi/gitlab-watcher",
+    "require-dev": {
+        "predis/predis": "^1.1",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "authors": [
+        {
+            "name": "Benyi",
+            "email": "banqhsia@msn.com"
+        }
+    ],
+    "require": {}
+}
