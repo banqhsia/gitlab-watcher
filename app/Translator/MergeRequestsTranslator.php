@@ -2,7 +2,7 @@
 
 namespace App\Translator;
 
-class MergeRequestTranslator
+class MergeRequestsTranslator
 {
     public function __construct($crawler)
     {
