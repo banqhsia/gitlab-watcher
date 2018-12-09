@@ -8,8 +8,8 @@ class MergeRequests
 {
 
     // const BASE_URL = 'http://gitlab.wabow.com/api/v4/projects/%d/merge_requests?state=opened';
-    // const BASE_URL = 'http://www.mocky.io/v2/5c0228f43500005600ad0ac3';
-    const BASE_URL = 'http://www.mocky.io/v2/5c02355e3500003700ad0ace';
+    const BASE_URL = 'http://www.mocky.io/v2/5c0228f43500005600ad0ac3';
+    // const BASE_URL = 'http://www.mocky.io/v2/5c02355e3500003700ad0ace';
 
     private $response;
 
@@ -22,6 +22,19 @@ class MergeRequests
     public function getCount()
     {
         return count(json_decode($this->getResponse()));
+    }
+
+    /**
+     * @return MergeRequest[]
+     */
+    public function getMergeRequests()
+    {
+        $mergeRequests = [];
+        foreach (json_decode($this->getResponse()) as $mergeRequest) {
+            $mergeRequests[] = new MergeRequest($mergeRequest);
+        }
+
+        return $mergeRequests;
     }
 
     public function getResponse()
