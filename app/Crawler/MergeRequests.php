@@ -15,7 +15,7 @@ class MergeRequests
 
     public function __construct()
     {
-        $this->id = 60;
+        $this->id = 48;
         $this->client = new Client;
     }
 
