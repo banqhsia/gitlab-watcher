@@ -22,6 +22,7 @@ class Send
             'form_params' => [
                 'payload' => json_encode([
                     'text' => $text,
+                    'username' => 'Gitlab-Watcher',
                 ], JSON_UNESCAPED_UNICODE),
             ],
         ]);

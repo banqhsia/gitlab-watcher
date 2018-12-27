@@ -19,7 +19,8 @@ class MergeRequestTranslator
 
     public function translate()
     {
-        $result = date('H:i') . "\n";
+        $result = (new \DateTime)->setTimezone(new \DateTimeZone('Asia/Taipei'))->format('H:i') . "\n";
+
         foreach ($this->mergeRequests->getMergeRequests() as $mr) {
             if ($mr->isWorkInProgress()) {
                 continue;
