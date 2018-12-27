@@ -9,8 +9,11 @@ use App\Translator\MergeRequestTranslator;
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/bootstrap.php';
 
+$container = new DI\Container;
+
 $send = new Send;
-$mrs = new MergeRequests;
+$mrs = $container->get(MergeRequests::class);
+
 $redis = new Client;
 
 $comparator = new Comparator($redis, $mrs);
