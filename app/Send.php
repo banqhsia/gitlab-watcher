@@ -13,7 +13,7 @@ class Send
 
     public function __construct()
     {
-        $this->client = new Client;
+        $this->client = HttpClientFactory::createHttpClient();
     }
 
     public function send($text)

@@ -3,6 +3,7 @@
 namespace App\Crawler;
 
 use GuzzleHttp\Client;
+use App\HttpClientFactory;
 
 class MergeRequests
 {
@@ -16,7 +17,7 @@ class MergeRequests
     public function __construct()
     {
         $this->id = 48;
-        $this->client = new Client;
+        $this->client = HttpClientFactory::createHttpClient();
     }
 
     public function getCount()

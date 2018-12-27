@@ -3,6 +3,7 @@
 namespace App\Crawler;
 
 use GuzzleHttp\Client;
+use App\HttpClientFactory;
 
 class MergeRequest
 {
@@ -17,7 +18,7 @@ class MergeRequest
     {
         $this->id = 48;
         $this->mergeRequest = $mergeRequest;
-        $this->client = new Client;
+        $this->client = HttpClientFactory::createHttpClient();
     }
 
     public function getUpvote()
