@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 
 class MergeRequests
 {
-    const BASE_URL = 'http://gitlab.wabow.com/api/v4/projects/%d/merge_requests?state=opened';
+    const BASE_URL = 'http://gitlab.wabow.com/api/v4/projects/%d/merge_requests?state=closed';
 
     /**
      * @var \stdClass[]
