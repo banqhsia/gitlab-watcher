@@ -18,10 +18,10 @@ class MergeRequests
      *
      * @param Client $client
      */
-    public function __construct(Client $client)
+    public function __construct($mergeRequests)
     {
         $this->id = 48;
-        $this->client = $client;
+        $this->mergeRequests = $mergeRequests;
     }
 
     /**
@@ -63,29 +63,10 @@ class MergeRequests
      * 取得回應文字
      *
      * @return \stdClass[]
+     * @todo Refactor method name
      */
     private function getResponse()
     {
-        if (null === $this->response) {
-            $response = $this->client->get($this->getUrl(), [
-                'headers' => [
-                    'Private-Token' => $this->getPrivateToken(),
-                ],
-            ])->getBody()->getContents();
-
-            $this->response = json_decode($response);
-        }
-
-        return $this->response;
-    }
-
-    protected function getPrivateToken()
-    {
-        return getenv('PRIVATE_TOKEN');
-    }
-
-    protected function getUrl()
-    {
-        return sprintf(self::BASE_URL, $this->id);
+        return $this->mergeRequests;
     }
 }

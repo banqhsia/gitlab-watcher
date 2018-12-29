@@ -20,9 +20,7 @@ class MergeRequestsTest extends TestCase
     {
         $this->client = $this->createMock(Client::class);
 
-        $this->target = new MergeRequests($this->client);
-
-        $this->givenHttpResponse('get', $this->getMockResponse());
+        $this->target = new MergeRequests(json_decode($this->getMockResponse()));
     }
 
     public function test_getCount_should_get_2()
