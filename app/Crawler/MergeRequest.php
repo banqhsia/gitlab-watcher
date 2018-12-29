@@ -5,6 +5,7 @@ namespace App\Crawler;
 class MergeRequest
 {
     const BASE_URL = 'http://gitlab.wabow.com/api/v4/projects/%d/merge_requests/%d/award_emoji?state=closed';
+    // const BASE_URL = 'https://www.mocky.io/v2/5c0387843000000e00bb943e';
 
     private $response;
 
