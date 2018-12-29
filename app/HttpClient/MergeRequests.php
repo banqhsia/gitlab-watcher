@@ -2,7 +2,7 @@
 
 namespace App\HttpClient;
 
-class MR implements PayloadInterface, HasHeader
+class MergeRequests implements PayloadInterface, HasHeader
 {
     public function getMethod()
     {
