@@ -13,4 +13,9 @@ class PayloadFactory
     {
         return new MergeRequests;
     }
+
+    public static function createUpvoters($iid)
+    {
+        return new Upvoters($iid);
+    }
 }

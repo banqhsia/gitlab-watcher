@@ -6,7 +6,6 @@ use App\Absence;
 use App\Crawler\Upvoters;
 use App\Crawler\MergeRequest;
 use App\Crawler\MergeRequests;
-use App\HttpClient\HttpClient;
 
 class MergeRequestTranslator
 {
@@ -15,32 +14,31 @@ class MergeRequestTranslator
      */
     private $mergeRequests;
 
-    public function __construct(MergeRequests $mergeRequests, HttpClient $client)
+    private $result;
+
+    public function pushMergeRequest(MergeRequest $mergeRequest, Upvoters $upvoters)
     {
-        $this->mergeRequests = $mergeRequests;
-        $this->client = $client;
+        $absent = new Absence($mergeRequest, $upvoters);
+
+        if ($mergeRequest->isWorkInProgress()) {
+            return $this;
+        }
+
+        $this->result .=
+        ":speech_balloon: `!{$mergeRequest->getIid()}` <{$mergeRequest->getWebUrl()}|{$mergeRequest->getTitle()}>\n" .
+        "　　Not seen by " . "<@" . implode("> <@", $absent->getAbsentUser()) . ">\n\n"
+        ;
+
+        return $this;
     }
 
     public function translate()
     {
-        $result = (new \DateTime)->setTimezone(new \DateTimeZone('Asia/Taipei'))->format('H:i') . "\n";
+        return $this->getTime() . "\n" . $this->result;
+    }
 
-        foreach ($this->mergeRequests->getMergeRequests() as $mr) {
-            $re = $this->client->send(new \App\HttpClient\Upvoters($mr->getIid()));
-            $upvoters = new Upvoters($re);
-
-            $absent = new Absence($mr, $upvoters);
-
-            if ($mr->isWorkInProgress()) {
-                continue;
-            }
-
-            $result .=
-            ":speech_balloon: `!{$mr->getIid()}` <{$mr->getWebUrl()}|{$mr->getTitle()}>\n" .
-            "　　Not seen by " . "<@" . implode("> <@", $absent->getAbsentUser()) . ">\n\n"
-            ;
-        }
-
-        return $result;
+    protected function getTime()
+    {
+        return (new \DateTime)->setTimezone(new \DateTimeZone('Asia/Taipei'))->format('H:i');
     }
 }
