@@ -13,7 +13,8 @@
     "require": {
         "vlucas/phpdotenv": "^2.5",
         "phpunit/phpunit": "^7.5",
-        "php-di/php-di": "^6.0"
+        "php-di/php-di": "^6.0",
+        "nesbot/carbon": "^2.9"
     },
     "autoload": {
         "psr-4": {
