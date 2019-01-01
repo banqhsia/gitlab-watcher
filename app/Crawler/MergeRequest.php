@@ -108,4 +108,14 @@ class MergeRequest
     {
         return $this->mergeRequest->web_url;
     }
+
+    public function getCreatedAt()
+    {
+        return $this->mergeRequest->created_at;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->mergeRequest->updated_at;
+    }
 }
