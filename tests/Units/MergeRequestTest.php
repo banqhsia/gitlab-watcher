@@ -2,7 +2,7 @@
 
 namespace Tests\Units;
 
-use App\Crawler\MergeRequest;
+use App\Gitlab\MergeRequest;
 use PHPUnit\Framework\TestCase;
 
 class MergeRequestTest extends TestCase

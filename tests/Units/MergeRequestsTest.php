@@ -3,7 +3,7 @@
 namespace Tests\Units;
 
 use GuzzleHttp\Client;
-use App\Crawler\MergeRequests;
+use App\Gitlab\MergeRequests;
 use Tests\CanMockHttpResponse;
 use PHPUnit\Framework\TestCase;
 

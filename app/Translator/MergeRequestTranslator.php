@@ -4,9 +4,9 @@ namespace App\Translator;
 
 use App\Absence;
 use Carbon\Carbon;
-use App\Crawler\Upvoters;
-use App\Crawler\MergeRequest;
-use App\Crawler\MergeRequests;
+use App\Gitlab\Upvoters;
+use App\Gitlab\MergeRequest;
+use App\Gitlab\MergeRequests;
 
 class MergeRequestTranslator
 {

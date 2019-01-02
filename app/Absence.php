@@ -2,8 +2,8 @@
 
 namespace App;
 
-use App\Crawler\Upvoters;
-use App\Crawler\MergeRequest;
+use App\Gitlab\Upvoters;
+use App\Gitlab\MergeRequest;
 
 class Absence
 {

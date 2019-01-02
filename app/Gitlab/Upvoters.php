@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Crawler;
+namespace App\Gitlab;
 
 class Upvoters
 {

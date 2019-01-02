@@ -3,8 +3,8 @@
 namespace App;
 
 use Predis\Client;
-use App\Crawler\Upvoters;
-use App\Crawler\MergeRequests;
+use App\Gitlab\Upvoters;
+use App\Gitlab\MergeRequests;
 use App\HttpClient\HttpClient;
 use App\HttpClient\PayloadFactory;
 use App\Translator\MergeRequestTranslator;
