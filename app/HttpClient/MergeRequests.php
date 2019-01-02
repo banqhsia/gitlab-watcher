@@ -2,8 +2,12 @@
 
 namespace App\HttpClient;
 
-class MergeRequests implements PayloadInterface, HasHeader
+use App\HttpClient\BaseUrls\GitlabBaseUrl;
+
+class MergeRequests implements PayloadInterface, HasHeader, HasBaseUrl
 {
+    use GitlabBaseUrl;
+
     public function __construct()
     {
         $this->id = 48;
@@ -16,7 +20,7 @@ class MergeRequests implements PayloadInterface, HasHeader
 
     public function getUrl()
     {
-        return "http://gitlab.wabow.com/api/v4/projects/{$this->id}/merge_requests?state=merged";
+        return "/api/v4/projects/{$this->id}/merge_requests?state=merged";
 
         return 'http://www.mocky.io/v2/5c0228f43500005600ad0ac3';
     }

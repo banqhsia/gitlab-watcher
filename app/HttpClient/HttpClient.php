@@ -40,10 +40,27 @@ class HttpClient
         $method = $payload->getMethod();
 
         $response = $this->client->{$method}(
-            $payload->getUrl(),
+            $this->getUrl($payload),
             $options
         )->getBody()->getContents();
 
         return json_decode($response);
+    }
+
+    /**
+     * 取得 URL
+     *
+     * @param PayloadInterface $payload
+     * @return string
+     */
+    private function getUrl(PayloadInterface $payload)
+    {
+        $fullUrl = $payload->getUrl();
+
+        if ($payload instanceof HasBaseUrl) {
+            $fullUrl = $payload->getBaseUrl() . $fullUrl;
+        }
+
+        return $fullUrl;
     }
 }
