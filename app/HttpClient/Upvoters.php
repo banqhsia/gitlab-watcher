@@ -8,9 +8,9 @@ class Upvoters implements PayloadInterface, HasHeader, HasBaseUrl
 {
     use GitlabBaseUrl;
 
-    public function __construct($iid)
+    public function __construct($id, $iid)
     {
-        $this->id = 48;
+        $this->id = $id;
         $this->iid = $iid;
     }
 

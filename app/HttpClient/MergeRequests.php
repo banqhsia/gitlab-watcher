@@ -8,9 +8,9 @@ class MergeRequests implements PayloadInterface, HasHeader, HasBaseUrl
 {
     use GitlabBaseUrl;
 
-    public function __construct()
+    public function __construct($id)
     {
-        $this->id = 48;
+        $this->id = $id;
     }
 
     public function getMethod()
@@ -20,7 +20,7 @@ class MergeRequests implements PayloadInterface, HasHeader, HasBaseUrl
 
     public function getUrl()
     {
-        return "/api/v4/projects/{$this->id}/merge_requests?state=merged";
+        return "/api/v4/projects/{$this->id}/merge_requests?state=opened";
 
         return 'http://www.mocky.io/v2/5c0228f43500005600ad0ac3';
     }
