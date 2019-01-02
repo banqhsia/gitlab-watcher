@@ -7,8 +7,6 @@ use App\Gitlab\MergeRequest;
 
 class Absence
 {
-    const USER = ['marty', 'leo', 'ben', 'eno'];
-
     /**
      * @var MergeRequest
      */
@@ -20,15 +18,26 @@ class Absence
      */
     private $upvoters;
 
+    /**
+     * Construct
+     *
+     * @param MergeRequest $mergeRequest
+     * @param Upvoters $upvoters
+     */
     public function __construct(MergeRequest $mergeRequest, Upvoters $upvoters)
     {
         $this->mergeRequest = $mergeRequest;
         $this->upvoters = $upvoters;
     }
 
-    public function getAbsentUser()
+    /**
+     * 取得不在名單中的成員
+     *
+     * @return array
+     */
+    public function getAbsentMembers()
     {
-        $absent = array_diff(self::USER, $this->upvoters->getUpvoters());
+        $absent = array_diff($this->getMembers(), $this->upvoters->getUpvoters());
 
         /** Remove author themselves */
         $flipped = array_flip($absent);
@@ -37,5 +46,21 @@ class Absence
         $absent = array_keys($flipped);
 
         return $absent;
+    }
+
+    /**
+     * 取得成員名單
+     *
+     * @return array
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function getMembers()
+    {
+        if (empty($memberString = getenv('MEMBERS'))) {
+            throw new \InvalidArgumentException("Cannot get members list from environment variables.");
+        };
+
+        return explode(',', $memberString);
     }
 }

@@ -30,7 +30,7 @@ class MergeRequestTranslator
 
         $this->result .=
         ":speech_balloon: `!{$mergeRequest->getIid()}` <{$mergeRequest->getWebUrl()}|{$mergeRequest->getTitle()}>\n" .
-        "　　Not seen by " . "<@" . implode("> <@", $absent->getAbsentUser()) . ">\n\n"
+        "　　Not seen by " . "<@" . implode("> <@", $absent->getAbsentMembers()) . ">\n\n"
         // "　　_{$this->getDifferenceFromNow($mergeRequest->getCreatedAt())}_\n\n"
         ;
 
