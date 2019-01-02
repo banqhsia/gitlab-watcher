@@ -8,10 +8,10 @@ use App\Gitlab\MergeRequests;
 use App\HttpClient\HttpClient;
 use App\HttpClient\PayloadFactory;
 use App\Translator\MergeRequestTranslator;
+use App\Comparator\MergeRequestVersionComparator;
 
 class Controller
 {
-
     private const MERGE_REQUESTS_VERSION = 'MERGE_REQUESTS_VERSION';
 
     public function handle(HttpClient $httpClient, MergeRequestTranslator $translator, Client $redis)
@@ -19,9 +19,9 @@ class Controller
         $mergeRequests = $httpClient->send(PayloadFactory::createMergeRequests());
         $mergeRequests = new MergeRequests($mergeRequests);
 
-        $comparator = new Comparator($redis, $mergeRequests);
+        $comparator = new Comparator(new MergeRequestVersionComparator($redis, $mergeRequests));
 
-        if (! $comparator->isChanged()) {
+        if ($comparator->isSame()) {
             return;
         }
 

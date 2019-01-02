@@ -2,20 +2,38 @@
 
 namespace App;
 
-use Predis\Client as Redis;
+use App\Comparator\ComparatorInterface;
 
 class Comparator
 {
-    private const CACHE_KEY = 'MERGE_REQUESTS_VERSION';
+    /**
+     * @var ComparatorInterface
+     */
+    private $comparator;
 
-    public function __construct(Redis $redis, $client)
+    /**
+     * Construct
+     *
+     * @param ComparatorInterface $comparator
+     */
+    public function __construct(ComparatorInterface $comparator)
     {
-        $this->redis = $redis;
-        $this->client = $client;
+        $this->comparator = $comparator;
     }
 
+    /**
+     * @return bool
+     */
     public function isChanged()
     {
-        return ! ($this->redis->get(self::CACHE_KEY) === $this->client->getSignature());
+        return ! $this->isSame();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSame()
+    {
+        return $this->comparator->getPreviousContext() === $this->comparator->getCurrentContext();
     }
 }
