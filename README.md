@@ -1,7 +1,7 @@
 # Gitlab Watcher
 Watching (self-hosted) Gitlab merge requests status, and notifying the members that haven't seen.
 
-## installation
+## Installation
 1. Clone the repository.
 2. Install Composer dependencies.
     ```
