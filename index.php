@@ -6,6 +6,10 @@ use App\HttpClient\PayloadFactory;
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/bootstrap.php';
 
-PayloadFactory::setId(65);
+foreach (explode(',', getenv('WATCHING_PROJECTS')) as $projectId) {
+    PayloadFactory::setId($projectId);
 
-$container->call(Controller::class . "::handle");
+    $container->call(Controller::class . "::handle", [
+        'id' => $projectId,
+    ]);
+}

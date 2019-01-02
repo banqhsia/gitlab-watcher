@@ -12,20 +12,25 @@ use App\Comparator\MergeRequestVersionComparator;
 
 class Controller
 {
-    private const MERGE_REQUESTS_VERSION = 'MERGE_REQUESTS_VERSION';
+    private const MERGE_REQUESTS_VERSION = 'MR_VER';
 
-    public function handle(HttpClient $httpClient, MergeRequestTranslator $translator, Client $redis)
+    public function handle($id, HttpClient $httpClient, MergeRequestTranslator $translator, Client $redis)
     {
+
         $mergeRequests = $httpClient->send(PayloadFactory::createMergeRequests());
         $mergeRequests = new MergeRequests($mergeRequests);
 
-        $comparator = new Comparator(new MergeRequestVersionComparator($redis, $mergeRequests));
+        $comparator = new Comparator(new MergeRequestVersionComparator($id, $redis, $mergeRequests));
 
         if ($comparator->isSame()) {
             return;
         }
 
-        $redis->set(self::MERGE_REQUESTS_VERSION, $mergeRequests->getSignature());
+        $redis->set(self::MERGE_REQUESTS_VERSION . "_" . $id, $mergeRequests->getSignature());
+
+        if (0 === $mergeRequests->getCount()) {
+            return;
+        }
 
         foreach ($mergeRequests->getMergeRequests() as $mergeRequest) {
             $upvoters = $httpClient->send(PayloadFactory::createUpvoters($mergeRequest->getIid()));

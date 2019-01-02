@@ -7,10 +7,11 @@ use App\Gitlab\MergeRequests;
 
 class MergeRequestVersionComparator implements ComparatorInterface
 {
-    private const CACHE_KEY = 'MERGE_REQUESTS_VERSION';
+    private const CACHE_KEY = 'MR_VER';
 
-    public function __construct(Redis $redis, MergeRequests $mergeRequests)
+    public function __construct($id, Redis $redis, MergeRequests $mergeRequests)
     {
+        $this->id = $id;
         $this->redis = $redis;
         $this->mergeRequests = $mergeRequests;
     }
@@ -22,6 +23,6 @@ class MergeRequestVersionComparator implements ComparatorInterface
 
     public function getPreviousContext()
     {
-        return $this->redis->get(self::CACHE_KEY);
+        return $this->redis->get(self::CACHE_KEY . "_{$this->id}");
     }
 }
