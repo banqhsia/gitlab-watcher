@@ -21,7 +21,6 @@ class MergeRequests
      */
     public function __construct($mergeRequests)
     {
-        $this->id = 48;
         $this->mergeRequests = $mergeRequests;
     }
 
