@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Predis\Client;
 use App\Crawler\Upvoters;
 use App\Crawler\MergeRequests;
 use App\HttpClient\HttpClient;
@@ -10,10 +11,21 @@ use App\Translator\MergeRequestTranslator;
 
 class Controller
 {
-    public function handle(HttpClient $httpClient, MergeRequestTranslator $translator)
+
+    private const MERGE_REQUESTS_VERSION = 'MERGE_REQUESTS_VERSION';
+
+    public function handle(HttpClient $httpClient, MergeRequestTranslator $translator, Client $redis)
     {
         $mergeRequests = $httpClient->send(PayloadFactory::createMergeRequests());
         $mergeRequests = new MergeRequests($mergeRequests);
+
+        $comparator = new Comparator($redis, $mergeRequests);
+
+        if (! $comparator->isChanged()) {
+            return;
+        }
+
+        $redis->set(self::MERGE_REQUESTS_VERSION, $mergeRequests->getSignature());
 
         foreach ($mergeRequests->getMergeRequests() as $mergeRequest) {
             $upvoters = $httpClient->send(PayloadFactory::createUpvoters($mergeRequest->getIid()));

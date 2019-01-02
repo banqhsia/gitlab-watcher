@@ -6,7 +6,7 @@ use Predis\Client as Redis;
 
 class Comparator
 {
-    private const CACHE_KEY = 'GL_VER';
+    private const CACHE_KEY = 'MERGE_REQUESTS_VERSION';
 
     public function __construct(Redis $redis, $client)
     {
