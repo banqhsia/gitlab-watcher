@@ -28,5 +28,4 @@ class AbsenceTest extends TestCase
         $expected = ['leo'];
         $this->assertEquals($expected, $this->target->getAbsentMembers());
     }
-
 }

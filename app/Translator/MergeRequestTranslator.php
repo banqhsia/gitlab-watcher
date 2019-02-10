@@ -4,7 +4,7 @@ namespace App\Translator;
 
 use App\Absence;
 use Carbon\Carbon;
-use App\Gitlab\Upvoters;
+use App\Gitlab\Reactions;
 use App\Gitlab\MergeRequest;
 use App\Gitlab\MergeRequests;
 
@@ -20,7 +20,7 @@ class MergeRequestTranslator
      */
     private $result;
 
-    public function pushMergeRequest(MergeRequest $mergeRequest, Upvoters $upvoters)
+    public function pushMergeRequest(MergeRequest $mergeRequest, Reactions $upvoters)
     {
         $absent = new Absence($mergeRequest, $upvoters);
 
@@ -29,9 +29,18 @@ class MergeRequestTranslator
         }
 
         $this->result .=
-        ":speech_balloon: `!{$mergeRequest->getIid()}` <{$mergeRequest->getWebUrl()}|{$mergeRequest->getTitle()}>\n" .
-        "　　{$this->getDifferenceFromNow($mergeRequest->getCreatedAt())} created by *{$mergeRequest->getAuthor()}*, not seen by " . "<@" . implode("> <@", $absent->getAbsentMembers()) . ">\n\n"
-        ;
+            "%s `!{$mergeRequest->getIid()}` <{$mergeRequest->getWebUrl()}|{$mergeRequest->getTitle()}>\n" .
+            "　　{$this->getDifferenceFromNow($mergeRequest->getCreatedAt())} created by *{$mergeRequest->getAuthor()}*,";
+
+        if ($upvoters->getUpvotersCount() >= 2) {
+            $this->result = sprintf($this->result, ':ok:');
+            $this->result .= " ready to merge.";
+        } else {
+            $this->result = sprintf($this->result, ':speech_balloon:');
+            $this->result .= " not seen by " . "<@" . implode("> <@", $absent->getAbsentMembers()) . ">";
+        }
+
+        $this->result .= "\n\n";
 
         return $this;
     }

@@ -3,7 +3,7 @@
 namespace App;
 
 use Predis\Client;
-use App\Gitlab\Upvoters;
+use App\Gitlab\Reactions;
 use App\Gitlab\MergeRequests;
 use App\HttpClient\HttpClient;
 use App\HttpClient\PayloadFactory;
@@ -34,7 +34,7 @@ class Controller
 
         foreach ($mergeRequests->getMergeRequests() as $mergeRequest) {
             $upvoters = $httpClient->send(PayloadFactory::createUpvoters($mergeRequest->getIid()));
-            $upvoters = new Upvoters($upvoters);
+            $upvoters = new Reactions($upvoters);
 
             $translator->pushMergeRequest($mergeRequest, $upvoters);
         }
