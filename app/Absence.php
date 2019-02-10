@@ -37,15 +37,14 @@ class Absence
      */
     public function getAbsentMembers()
     {
-        $absent = array_diff($this->getMembers(), $this->reactions->getReactors());
+        $absent = collect($this->getMembers())
+            ->diff($this->reactions->getReactors())
+            ->reject(function ($member) {
+                /** Remove author themselves */
+                return $this->mergeRequest->getAuthor() === $member;
+            })->flatten();
 
-        /** Remove author themselves */
-        $flipped = array_flip($absent);
-        unset($flipped[$this->mergeRequest->getAuthor()]);
-
-        $absent = array_keys($flipped);
-
-        return $absent;
+        return $absent->toArray();
     }
 
     /**
