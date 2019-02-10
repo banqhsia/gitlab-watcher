@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Gitlab\Upvoters;
+use App\Gitlab\Reactions;
 use App\Gitlab\MergeRequest;
 
 class Absence
@@ -13,21 +13,21 @@ class Absence
     private $mergeRequest;
 
     /**
-     * @var Upvoters
+     * @var Reactions
      * @todo To be abstracted
      */
-    private $upvoters;
+    private $reactions;
 
     /**
      * Construct
      *
      * @param MergeRequest $mergeRequest
-     * @param Upvoters $upvoters
+     * @param Reactions $reactions
      */
-    public function __construct(MergeRequest $mergeRequest, Upvoters $upvoters)
+    public function __construct(MergeRequest $mergeRequest, Reactions $reactions)
     {
         $this->mergeRequest = $mergeRequest;
-        $this->upvoters = $upvoters;
+        $this->reactions = $reactions;
     }
 
     /**
@@ -37,7 +37,7 @@ class Absence
      */
     public function getAbsentMembers()
     {
-        $absent = array_diff($this->getMembers(), $this->upvoters->getUpvoters());
+        $absent = array_diff($this->getMembers(), $this->reactions->getReactors());
 
         /** Remove author themselves */
         $flipped = array_flip($absent);
