@@ -11,6 +11,11 @@ class PayloadFactory
         return new SlackChannel($text);
     }
 
+    public static function createProject()
+    {
+        return new Project(self::$id);
+    }
+
     public static function createMergeRequests()
     {
         return new MergeRequests(self::$id);
