@@ -37,6 +37,11 @@ class MergeRequestTest extends TestCase
         $this->assertEquals('db15b4e2a9a52e80be694cccb34f2ff2', $this->target->getSignature());
     }
 
+    public function test_getUser_should_return_ben()
+    {
+        $this->assertEquals('ben', $this->target->getAuthor());
+    }
+
     public function test_isWorkInProgress_should_be_false()
     {
         $this->assertFalse($this->target->isWorkInProgress());
