@@ -3,8 +3,6 @@
 namespace App;
 
 use Predis\Client;
-use App\Gitlab\Reactions;
-use App\Gitlab\MergeRequests;
 use App\HttpClient\HttpClient;
 use App\HttpClient\PayloadFactory;
 use App\Translator\MergeRequestTranslator;
@@ -16,9 +14,7 @@ class Controller
 
     public function handle($id, HttpClient $httpClient, MergeRequestTranslator $translator, Client $redis)
     {
-
         $mergeRequests = $httpClient->send(PayloadFactory::createMergeRequests());
-        $mergeRequests = new MergeRequests($mergeRequests);
 
         $comparator = new Comparator(new MergeRequestVersionComparator($id, $redis, $mergeRequests));
 
@@ -32,9 +28,11 @@ class Controller
             return;
         }
 
+        $project = $httpClient->send(PayloadFactory::createProject());
+        $translator->setProject($project);
+
         foreach ($mergeRequests->getMergeRequests() as $mergeRequest) {
             $upvoters = $httpClient->send(PayloadFactory::createUpvoters($mergeRequest->getIid()));
-            $upvoters = new Reactions($upvoters);
 
             $translator->pushMergeRequest($mergeRequest, $upvoters);
         }

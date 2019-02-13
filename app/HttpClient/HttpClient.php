@@ -39,12 +39,17 @@ class HttpClient
 
         $method = $payload->getMethod();
 
-        $response = $this->client->{$method}(
+        $response = json_decode($this->client->{$method}(
             $this->getUrl($payload),
             $options
-        )->getBody()->getContents();
+        )->getBody()->getContents());
 
-        return json_decode($response);
+        if ($payload instanceof CanCreateDto) {
+            return $payload->create($response);
+        }
+
+        return $response;
+
     }
 
     /**

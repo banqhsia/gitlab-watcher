@@ -3,8 +3,9 @@
 namespace App\HttpClient;
 
 use App\HttpClient\BaseUrls\GitlabBaseUrl;
+use App\Gitlab\MergeRequests as MergeRequestsDto;
 
-class MergeRequests implements PayloadInterface, HasHeader, HasBaseUrl
+class MergeRequests implements PayloadInterface, CanCreateDto, HasHeader, HasBaseUrl
 {
     use GitlabBaseUrl;
 
@@ -30,5 +31,10 @@ class MergeRequests implements PayloadInterface, HasHeader, HasBaseUrl
         return [
             'Private-Token' => getenv('PRIVATE_TOKEN'),
         ];
+    }
+
+    public function create($contents)
+    {
+        return new MergeRequestsDto($contents);
     }
 }

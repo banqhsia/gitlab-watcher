@@ -2,9 +2,10 @@
 
 namespace App\HttpClient;
 
+use App\Gitlab\Reactions as ReactionsDto;
 use App\HttpClient\BaseUrls\GitlabBaseUrl;
 
-class Upvoters implements PayloadInterface, HasHeader, HasBaseUrl
+class Upvoters implements PayloadInterface, CanCreateDto, HasHeader, HasBaseUrl
 {
     use GitlabBaseUrl;
 
@@ -31,5 +32,10 @@ class Upvoters implements PayloadInterface, HasHeader, HasBaseUrl
         return [
             'Private-Token' => getenv('PRIVATE_TOKEN'),
         ];
+    }
+
+    public function create($contents)
+    {
+        return new ReactionsDto($contents);
     }
 }
