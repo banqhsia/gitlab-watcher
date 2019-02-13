@@ -20,19 +20,28 @@ class MergeRequestTranslator
      */
     private $result;
 
+    private $project;
+
+    public function setProject($project)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
     public function pushMergeRequest(MergeRequest $mergeRequest, Reactions $upvoters)
     {
         $absent = new Absence($mergeRequest, $upvoters);
 
         $this->result .=
             "%s `!{$mergeRequest->getIid()}` <{$mergeRequest->getWebUrl()}|{$mergeRequest->getTitle()}>\n" .
-            "　　{$this->getDifferenceFromNow($mergeRequest->getCreatedAt())} created by *{$mergeRequest->getAuthor()}*,";
+            "　　{$this->getDifferenceFromNow($mergeRequest->getCreatedAt())} created by %s,";
 
         if ($upvoters->getUpvotersCount() >= 2) {
-            $this->result = sprintf($this->result, ':ok:');
-            $this->result .= " ready to merge.";
+            $this->result = sprintf($this->result, ':ok:', "*<@{$mergeRequest->getAuthor()}>*");
+            $this->result .= " is ready to merge";
         } else {
-            $this->result = sprintf($this->result, ':speech_balloon:');
+            $this->result = sprintf($this->result, ':speech_balloon:', "*{$mergeRequest->getAuthor()}*");
             $this->result .= " not seen by " . "<@" . implode("> <@", $absent->getAbsentMembers()) . ">";
         }
 
@@ -43,7 +52,7 @@ class MergeRequestTranslator
 
     public function translate()
     {
-        return $this->getTime()->format('H:i') . "\n" . $this->result;
+        return "{$this->getTime()->format('H:i')} {$this->project->getName()} \n {$this->result}";
     }
 
     protected function getTime()
