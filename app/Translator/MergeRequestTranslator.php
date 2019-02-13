@@ -24,10 +24,6 @@ class MergeRequestTranslator
     {
         $absent = new Absence($mergeRequest, $upvoters);
 
-        if ($mergeRequest->isWorkInProgress()) {
-            return $this;
-        }
-
         $this->result .=
             "%s `!{$mergeRequest->getIid()}` <{$mergeRequest->getWebUrl()}|{$mergeRequest->getTitle()}>\n" .
             "　　{$this->getDifferenceFromNow($mergeRequest->getCreatedAt())} created by *{$mergeRequest->getAuthor()}*,";
