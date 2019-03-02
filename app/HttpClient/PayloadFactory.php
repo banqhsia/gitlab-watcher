@@ -6,8 +6,6 @@ use App\Project;
 
 class PayloadFactory
 {
-    private static $id;
-
     public static function createSlackChannel($text)
     {
         return new SlackChannel($text);
@@ -21,10 +19,5 @@ class PayloadFactory
     public static function createUpvoters($iid)
     {
         return new Upvoters(Project::getId(), $iid);
-    }
-
-    public static function setId($id)
-    {
-        self::$id = $id;
     }
 }
