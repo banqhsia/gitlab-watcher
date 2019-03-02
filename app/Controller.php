@@ -12,7 +12,7 @@ class Controller
 {
     private const MERGE_REQUESTS_VERSION = 'MR_VER';
 
-    public function handle($id, HttpClient $httpClient, MergeRequestTranslator $translator, Client $redis)
+    public function handle($id, HttpClient $httpClient, Client $redis)
     {
         $mergeRequests = $httpClient->send(PayloadFactory::createMergeRequests());
 
@@ -22,14 +22,13 @@ class Controller
             return;
         }
 
-        $redis->set(self::MERGE_REQUESTS_VERSION . "_" . $id, $mergeRequests->getSignature());
+        // $redis->set(self::MERGE_REQUESTS_VERSION . "_" . $id, $mergeRequests->getSignature());
 
         if (0 === $mergeRequests->getCount()) {
             return;
         }
 
-        $project = $httpClient->send(PayloadFactory::createProject());
-        $translator->setProject($project);
+        $translator = new MergeRequestTranslator;
 
         foreach ($mergeRequests->getMergeRequests() as $mergeRequest) {
             $upvoters = $httpClient->send(PayloadFactory::createUpvoters($mergeRequest->getIid()));

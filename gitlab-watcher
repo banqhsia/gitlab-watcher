@@ -2,14 +2,18 @@
 
 <?php
 
+use App\Project;
 use App\Controller;
-use App\HttpClient\PayloadFactory;
+use App\HttpClient\HttpClient;
+use App\HttpClient\Project as ProjectPayload;
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/bootstrap.php';
 
 foreach (explode(',', getenv('WATCHING_PROJECTS')) as $projectId) {
-    PayloadFactory::setId($projectId);
+
+    $project = $container->get(HttpClient::class)->send(new ProjectPayload($projectId));
+    Project::set($project);
 
     $container->call(Controller::class . "::handle", [
         'id' => $projectId,

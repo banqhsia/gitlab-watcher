@@ -2,6 +2,8 @@
 
 namespace App\HttpClient;
 
+use App\Project;
+
 class PayloadFactory
 {
     private static $id;
@@ -11,19 +13,14 @@ class PayloadFactory
         return new SlackChannel($text);
     }
 
-    public static function createProject()
-    {
-        return new Project(self::$id);
-    }
-
     public static function createMergeRequests()
     {
-        return new MergeRequests(self::$id);
+        return new MergeRequests(Project::getId());
     }
 
     public static function createUpvoters($iid)
     {
-        return new Upvoters(self::$id, $iid);
+        return new Upvoters(Project::getId(), $iid);
     }
 
     public static function setId($id)

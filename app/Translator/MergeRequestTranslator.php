@@ -3,31 +3,17 @@
 namespace App\Translator;
 
 use App\Absence;
+use App\Project;
 use Carbon\Carbon;
 use App\Gitlab\Reactions;
 use App\Gitlab\MergeRequest;
-use App\Gitlab\MergeRequests;
 
 class MergeRequestTranslator
 {
     /**
-     * @var MergeRequests
-     */
-    private $mergeRequests;
-
-    /**
      * @var string
      */
     private $result;
-
-    private $project;
-
-    public function setProject($project)
-    {
-        $this->project = $project;
-
-        return $this;
-    }
 
     public function pushMergeRequest(MergeRequest $mergeRequest, Reactions $upvoters)
     {
@@ -52,7 +38,7 @@ class MergeRequestTranslator
 
     public function translate()
     {
-        return "{$this->getTime()->format('H:i')} {$this->project->getName()} \n {$this->result}";
+        return "{$this->getTime()->format('H:i')} " . Project::getName() . " \n {$this->result}";
     }
 
     protected function getTime()
