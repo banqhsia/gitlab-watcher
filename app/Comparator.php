@@ -7,33 +7,18 @@ use App\Comparator\ComparatorInterface;
 class Comparator
 {
     /**
-     * @var ComparatorInterface
+     * @return bool
      */
-    private $comparator;
-
-    /**
-     * Construct
-     *
-     * @param ComparatorInterface $comparator
-     */
-    public function __construct(ComparatorInterface $comparator)
+    public static function isChanged(ComparatorInterface $context)
     {
-        $this->comparator = $comparator;
+        return ! static::isSame($context);
     }
 
     /**
      * @return bool
      */
-    public function isChanged()
+    public static function isSame(ComparatorInterface $context)
     {
-        return ! $this->isSame();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isSame()
-    {
-        return $this->comparator->getPreviousContext() === $this->comparator->getCurrentContext();
+        return $context->getPreviousContext() === $context->getCurrentContext();
     }
 }

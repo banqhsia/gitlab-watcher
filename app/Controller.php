@@ -16,9 +16,7 @@ class Controller
     {
         $mergeRequests = $httpClient->send(PayloadFactory::createMergeRequests());
 
-        $comparator = new Comparator(new MergeRequestVersionComparator($id, $redis, $mergeRequests));
-
-        if ($comparator->isSame()) {
+        if (Comparator::isSame(new MergeRequestVersionComparator($id, $redis, $mergeRequests))) {
             return;
         }
 
@@ -29,7 +27,6 @@ class Controller
         }
 
         $translator = new MergeRequestTranslator;
-
         foreach ($mergeRequests->getMergeRequests() as $mergeRequest) {
             $upvoters = $httpClient->send(PayloadFactory::createUpvoters($mergeRequest->getIid()));
 
