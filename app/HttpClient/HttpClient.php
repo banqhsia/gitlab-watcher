@@ -37,9 +37,8 @@ class HttpClient
             $options['form_params'] = $payload->getFormParameter();
         }
 
-        $method = $payload->getMethod();
-
-        $response = json_decode($this->client->{$method}(
+        $response = json_decode($this->client->request(
+            $payload->getMethod(),
             $this->getUrl($payload),
             $options
         )->getBody()->getContents());
@@ -49,7 +48,6 @@ class HttpClient
         }
 
         return $response;
-
     }
 
     /**
