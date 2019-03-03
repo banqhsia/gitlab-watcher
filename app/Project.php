@@ -24,6 +24,10 @@ class Project
     public static function getName()
     {
         return static::get()->name;
+    }
 
+    public static function getDescription()
+    {
+        return static::get()->description;
     }
 }
