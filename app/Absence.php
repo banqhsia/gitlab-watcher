@@ -56,10 +56,6 @@ class Absence
      */
     protected function getMembers()
     {
-        if (empty($memberString = getenv('MEMBERS'))) {
-            throw new \InvalidArgumentException("Cannot get members list from environment variables.");
-        };
-
-        return explode(',', $memberString);
+        return Setting::getMembers();
     }
 }

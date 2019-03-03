@@ -3,6 +3,7 @@
 <?php
 
 use App\Project;
+use App\Setting;
 use App\Controller;
 use App\HttpClient\HttpClient;
 use App\HttpClient\Project as ProjectPayload;
@@ -10,7 +11,7 @@ use App\HttpClient\Project as ProjectPayload;
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/bootstrap.php';
 
-foreach (explode(',', getenv('WATCHING_PROJECTS')) as $projectId) {
+foreach (Setting::getProjects() as $projectId) {
 
     $project = $container->get(HttpClient::class)->send(new ProjectPayload($projectId));
     Project::set($project);
